@@ -3,10 +3,12 @@ package com.microservice.User.Service;
 import com.microservice.User.Models.Entities.User;
 import com.microservice.User.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserService {
 
     @Autowired
