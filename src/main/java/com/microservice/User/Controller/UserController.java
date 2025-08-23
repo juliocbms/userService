@@ -1,6 +1,8 @@
 package com.microservice.User.Controller;
 
+import com.microservice.User.Config.Security.TokenService;
 import com.microservice.User.Models.DTO.AuthenticationDTO;
+import com.microservice.User.Models.DTO.LoginResponseDTO;
 import com.microservice.User.Models.DTO.RegisterDTO;
 import com.microservice.User.Models.Entities.User;
 import com.microservice.User.Service.UserService;
@@ -27,12 +29,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO dto){
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(),dto.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        return  ResponseEntity.ok().build();
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+
+        return  ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping
