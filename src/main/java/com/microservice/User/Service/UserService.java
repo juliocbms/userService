@@ -1,5 +1,6 @@
 package com.microservice.User.Service;
 
+import com.microservice.User.Models.DTO.RegisterDTO;
 import com.microservice.User.Models.Entities.User;
 import com.microservice.User.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class UserService {
     }
 
     public User saveUser(User user){
-        String encryptedPassowrd = new BCryptPasswordEncoder().encode(user.getPassword());
-        User newUser = new User(null, user.getEmail(), encryptedPassowrd);
+        String encryptedPassowrd = new BCryptPasswordEncoder().encode(user.getSenha());
+        User newUser = new User(null, user.getEmail(), encryptedPassowrd, user.getRole());
        return userRepository.save(newUser);
     }
 
@@ -45,5 +46,9 @@ public class UserService {
     private void updateUser(User newUser, User user){
         newUser.setEmail(user.getEmail());
         newUser.setSenha(user.getSenha());
+    }
+
+    public User fromDTO(RegisterDTO dto){
+        return new User(dto.id(),dto.email(), dto.senha(), dto.role());
     }
 }

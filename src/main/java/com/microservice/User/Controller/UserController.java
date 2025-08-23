@@ -1,6 +1,7 @@
 package com.microservice.User.Controller;
 
 import com.microservice.User.Models.DTO.AuthenticationDTO;
+import com.microservice.User.Models.DTO.RegisterDTO;
 import com.microservice.User.Models.Entities.User;
 import com.microservice.User.Service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,11 +37,11 @@ public class UserController {
 
     @PostMapping
     @Tag(name = "Salvar usuario", description = "salva usuario")
-    public ResponseEntity<User> save(@RequestBody @Valid User user){
+    public ResponseEntity<User> save(@RequestBody @Valid RegisterDTO registerDTO){
+        User user  = userService.fromDTO(registerDTO);
         user = userService.saveUser(user);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(uri).body(user);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 
     @GetMapping

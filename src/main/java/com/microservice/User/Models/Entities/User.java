@@ -31,6 +31,7 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+
     public Long getId() {
         return id;
     }
@@ -53,6 +54,14 @@ public class User implements UserDetails {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     @Override
