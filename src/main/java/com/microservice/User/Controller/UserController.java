@@ -4,6 +4,7 @@ import com.microservice.User.Config.Security.TokenService;
 import com.microservice.User.Models.DTO.AuthenticationDTO;
 import com.microservice.User.Models.DTO.LoginResponseDTO;
 import com.microservice.User.Models.DTO.RegisterDTO;
+import com.microservice.User.Models.DTO.UpdateDTO;
 import com.microservice.User.Models.Entities.User;
 import com.microservice.User.Service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -69,9 +70,8 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Tag(name = "Atualizar usuario", description = "atualiza usuario")
-    public ResponseEntity<User> atualizar(@PathVariable UUID id, @RequestBody User user){
-        user.setId(id);
-        userService.update(id,user);
+    public ResponseEntity<User> atualizar(@PathVariable UUID id, @RequestBody UpdateDTO updateDTO){
+        User user = userService.update(id, updateDTO);
         return ResponseEntity.ok().body(user);
     }
 

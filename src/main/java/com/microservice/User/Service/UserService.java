@@ -2,6 +2,7 @@ package com.microservice.User.Service;
 
 import com.microservice.User.Config.Security.TokenService;
 import com.microservice.User.Models.DTO.RegisterDTO;
+import com.microservice.User.Models.DTO.UpdateDTO;
 import com.microservice.User.Models.Entities.User;
 import com.microservice.User.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +38,17 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User update(UUID id, User user){
+    public User update(UUID id, UpdateDTO user){
         User newUser = userRepository.getReferenceById(id);
         updateUser(newUser,user);
         return userRepository.save(newUser);
     }
 
 
-    private void updateUser(User newUser, User user){
-        newUser.setEmail(user.getEmail());
-        newUser.setSenha(user.getSenha());
+    private void updateUser(User newUser, UpdateDTO user){
+        newUser.setEmail(user.email());
+        newUser.setSenha(user.senha());
+        newUser.setRole(user.role());
     }
 
     public User fromDTO(RegisterDTO dto){
