@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
@@ -33,6 +34,7 @@ public class UserController {
     private TokenService tokenService;
 
     @PostMapping("/login")
+    @Tag(name = "Autenticar usuario", description = "autentica usuario")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO dto){
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(),dto.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -60,14 +62,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Tag(name = "Buscar usuario por Id", description = "busca usuario por id")
-    public ResponseEntity<User> getById(@PathVariable Long id){
+    public ResponseEntity<User> getById(@PathVariable UUID id){
         User user = userService.findById(id);
         return ResponseEntity.ok().body(user);
     }
 
     @PutMapping("/{id}")
     @Tag(name = "Atualizar usuario", description = "atualiza usuario")
-    public ResponseEntity<User> atualizar(@PathVariable Long id, @RequestBody User user){
+    public ResponseEntity<User> atualizar(@PathVariable UUID id, @RequestBody User user){
         user.setId(id);
         userService.update(id,user);
         return ResponseEntity.ok().body(user);
@@ -75,7 +77,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @Tag(name = "Deletar usuario", description = "deleta usuario")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable UUID id){
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
