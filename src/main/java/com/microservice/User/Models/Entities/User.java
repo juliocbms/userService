@@ -24,10 +24,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String email, String senha) {
+    public User(Long id, String email, String senha, UserRole role) {
         this.id = id;
         this.email = email;
         this.senha = senha;
+        this.role = role;
     }
 
     public Long getId() {

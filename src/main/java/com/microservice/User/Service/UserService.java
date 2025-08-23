@@ -3,6 +3,7 @@ package com.microservice.User.Service;
 import com.microservice.User.Models.Entities.User;
 import com.microservice.User.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +26,9 @@ public class UserService {
     }
 
     public User saveUser(User user){
-        return  userRepository.save(user);
+        String encryptedPassowrd = new BCryptPasswordEncoder().encode(user.getPassword());
+        User newUser = new User(null, user.getEmail(), encryptedPassowrd);
+       return userRepository.save(newUser);
     }
 
     public void deleteById(Long id){

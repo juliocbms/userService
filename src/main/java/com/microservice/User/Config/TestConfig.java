@@ -1,6 +1,7 @@
 package com.microservice.User.Config;
 
 import com.microservice.User.Models.Entities.User;
+import com.microservice.User.Models.Entities.UserRole;
 import com.microservice.User.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -21,11 +22,11 @@ public class TestConfig  implements CommandLineRunner {
 
         userRepository.deleteAll();
 
-        User u1 = new User(null, "joao@example.com", "123456");
-        User u2 = new User(null, "maria@example.com", "senhaSegura");
-        User u3 = new User(null, "pedro@example.com", "pedro2025");
-        User u4 = new User(null, "ana@example.com", "ana@123");
-        User u5 = new User(null, "lucas@example.com", "lucas321");
+        User u1 = new User(null, "joao@example.com", "123456", UserRole.ADMIN);
+        User u2 = new User(null, "maria@example.com", "senhaSegura",UserRole.ADMIN);
+        User u3 = new User(null, "pedro@example.com", "pedro2025",UserRole.ADMIN);
+        User u4 = new User(null, "ana@example.com", "ana@123",UserRole.ADMIN);
+        User u5 = new User(null, "lucas@example.com", "lucas321",UserRole.ADMIN);
 
 
         userRepository.saveAll(Arrays.asList(u1,u2,u3,u4,u5));

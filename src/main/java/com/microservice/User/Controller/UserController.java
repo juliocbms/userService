@@ -1,10 +1,15 @@
 package com.microservice.User.Controller;
 
+import com.microservice.User.Models.DTO.AuthenticationDTO;
 import com.microservice.User.Models.Entities.User;
 import com.microservice.User.Service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -16,11 +21,22 @@ import java.util.List;
 public class UserController {
 
     @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
     private UserService userService;
+
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO dto){
+        var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(),dto.senha());
+        var auth = this.authenticationManager.authenticate(usernamePassword);
+
+        return  ResponseEntity.ok().build();
+    }
 
     @PostMapping
     @Tag(name = "Salvar usuario", description = "salva usuario")
-    public ResponseEntity<User> save(@RequestBody User user){
+    public ResponseEntity<User> save(@RequestBody @Valid User user){
         user = userService.saveUser(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
