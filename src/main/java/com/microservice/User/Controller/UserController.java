@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +56,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Tag(name = "Listar usuarios", description = "lista usuarios")
     public ResponseEntity<List<User>> listaUsuarios(){
         List<User> list = userService.findAll();
@@ -62,6 +64,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Tag(name = "Buscar usuario por Id", description = "busca usuario por id")
     public ResponseEntity<User> getById(@PathVariable UUID id){
         User user = userService.findById(id);
@@ -69,6 +72,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Tag(name = "Atualizar usuario", description = "atualiza usuario")
     public ResponseEntity<User> atualizar(@PathVariable UUID id, @RequestBody UpdateDTO updateDTO){
         User user = userService.update(id, updateDTO);
@@ -76,6 +80,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Tag(name = "Deletar usuario", description = "deleta usuario")
     public ResponseEntity<Void> delete(@PathVariable UUID id){
         userService.deleteById(id);
